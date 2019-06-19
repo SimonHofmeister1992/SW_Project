@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<ui:composition template="../../WEB-INF/templates/pageStructureTemplateLoggedIn.xhtml">
+    <ui:define name="content">
+
+        <h2>Bankkonto</h2>
+
+        <h3> Bankkonto hinzuf&uuml;gen </h3>
+        <h:form>
+
+            <h:outputLabel for="IBAN">
+                IBAN:
+            </h:outputLabel>
+            <h:inputText id="IBAN" value="#{bankAccountModel.IBAN}">
+            </h:inputText>
+
+            <br/>
+
+            <h:outputLabel for="BIC">
+                BIC:
+            </h:outputLabel>
+            <h:inputText id="BIC" value="#{bankAccountModel.BIC}">
+            </h:inputText>
+
+            <br/>
+
+            <h:outputLabel for="FIName">
+                Name des Finanzinstituts:
+            </h:outputLabel>
+            <h:inputText id="FIName" value="#{bankAccountModel.nameOfFinanceInstitute}">
+            </h:inputText>
+
+            <br/>
+
+
+            <h:selectBooleanCheckbox id="defaultBankAccount" value="#{bankAccountModel.defaultBankAccount}">
+            </h:selectBooleanCheckbox>
+            <h:outputLabel for="defaultBankAccount">
+               Referenzkonto
+            </h:outputLabel>
+            <br/>
+
+            <h:selectBooleanCheckbox id="directMoneyTransferAllowed" value="#{bankAccountModel.directTransferAllowed}">
+            </h:selectBooleanCheckbox>
+            <h:outputLabel for="directMoneyTransferAllowed">
+                Direkten Geldeinzug erlauben, falls das Guthaben nicht ausreicht (nur bei Referenzkonto)
+            </h:outputLabel>
+
+            <br/>
+
+            <h:outputLabel for="loginId">
+                LoginId der Bank (Pflicht bei Referenzkonto, Kosten 0.01 €):
+            </h:outputLabel>
+            <h:inputText id="loginId" value="#{bankAccountModel.loginId}">
+            </h:inputText>
+
+            <br/>
+
+            <h:outputLabel for="pwd">
+                Password bei der Bank (Pflicht bei Referenzkonto):
+            </h:outputLabel>
+            <h:inputSecret id="pwd" value="#{bankAccountModel.loginPwd}">
+            </h:inputSecret>
+
+            <br/>
+
+            <h:commandButton id="addBankAccountButton" value="Bankkonto hinzuf&uuml;gen" action='#{bankAccountModel.addBankAccount(custModel, custAccModel)}'>
+
+            </h:commandButton>
+
+        </h:form>
+
+        <h3>  Verkn&uuml;pfte Bankkonten</h3>
+
+        <h:dataTable value="#{custAccModel.bankAccounts}" var="bankaccount">
+            <h:column>
+                <h:outputText value="#{bankaccount.iban}" converter="#{custAccModel.bankAccountConverter}" />
+            </h:column>
+        </h:dataTable>
+
+    </ui:define>
+</ui:composition>
+
+</html>

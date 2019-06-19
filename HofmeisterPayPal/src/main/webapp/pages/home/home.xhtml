@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="../../WEB-INF/templates/pageStructureTemplateLoggedIn.xhtml">
+        <ui:define name="content">
+
+                    <h2>Willkommen #{custModel.firstName} #{custModel.secondName}</h2>
+            <h:form>
+                <div>
+                    <div class="homebox">
+                        <div style="height: 2em"></div>
+                            <h:commandLink styleClass="homebox-content" value="Kontakte" action="/pages/customer/contacts"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="homebox">
+                        <div style="height: 2em"></div>
+                            <h:commandLink styleClass="homebox-content" value="Bankkonto" action="/pages/bankaccount/bankaccounts"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+                <div>
+                    <div class="homebox">
+                        <div style="height: 2em"></div>
+                            <h:commandLink styleClass="homebox-content" value="&Uuml;berweisung" action="/pages/transaction/transaction"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="homebox">
+                        <div style="height: 2em"></div>
+                            <h:commandLink styleClass="homebox-content" value="Guthaben" action="/pages/charge/charge"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+                <div>
+                    <div class="homebox">
+                        <div style="height: 2em"></div>
+                            <h:commandLink styleClass="homebox-content" value="Transaktionen" action="/pages/transaction/transactions"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+
+</html>
