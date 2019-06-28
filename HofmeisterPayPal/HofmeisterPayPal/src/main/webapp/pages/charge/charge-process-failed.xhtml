@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+<ui:composition template="../../WEB-INF/templates/pageStructureTemplateLoggedIn.xhtml">
+    <ui:define name="content">
+
+        <h2>Guthaben</h2>
+
+        <h:form>
+            <h3> Status </h3>
+            <h:outputLabel for="credit">
+                Aktuelles Guthaben:
+            </h:outputLabel>
+            <h:outputText id="credit" value="#{custAccModel.creditInEuro} €">
+            </h:outputText>
+
+            <br/>
+
+            <h3> Aufladen </h3>
+
+            <h:outputLabel for="amount">
+                Betrag in €:
+            </h:outputLabel>
+            <h:inputText id="amount" value="#{custAccModel.chargeAmount}">
+            </h:inputText>
+            <h:outputText value="Beispiele: 0.01 ; 1234.56 ; 123">
+
+            </h:outputText>
+            <br/>
+            <h:outputText style="color: red" value="Der Betrag konnte nicht aufgeladen werden. Bitte prüfen Sie, ob ihr angegebenes Referenzkonto ausreichend gedeckt ist."> </h:outputText> <br/>
+
+            <br/>
+
+            <h:commandButton id="chargeButton" value="Guthaben aufladen" action='#{custAccModel.charge(custModel)}'>
+
+            </h:commandButton>
+
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+
+</html>
