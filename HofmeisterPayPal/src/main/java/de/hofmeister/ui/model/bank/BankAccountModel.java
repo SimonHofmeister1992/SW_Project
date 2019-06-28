@@ -41,6 +41,7 @@ public class BankAccountModel {
         return IBAN;
     }
     public void setIBAN(String IBAN) {
+        if(IBAN!=null) IBAN = IBAN.trim();
         this.IBAN = IBAN;
     }
 
@@ -48,6 +49,7 @@ public class BankAccountModel {
         return nameOfFinanceInstitute;
     }
     public void setNameOfFinanceInstitute(String nameOfFinanceInstitute) {
+        if(nameOfFinanceInstitute!=null) nameOfFinanceInstitute = nameOfFinanceInstitute.trim();
         this.nameOfFinanceInstitute = nameOfFinanceInstitute;
     }
 
@@ -55,6 +57,7 @@ public class BankAccountModel {
         return BIC;
     }
     public void setBIC(String BIC) {
+        if(BIC!=null) BIC = BIC.trim();
         this.BIC = BIC;
     }
 
@@ -69,6 +72,7 @@ public class BankAccountModel {
         return loginId;
     }
     public void setLoginId(String loginId) {
+        if(loginId!=null) loginId = loginId.trim();
         this.loginId = loginId;
     }
 
@@ -76,6 +80,7 @@ public class BankAccountModel {
         return loginPwd;
     }
     public void setLoginPwd(String loginPwd) {
+        if(loginPwd!=null) loginPwd = loginPwd.trim();
         this.loginPwd = loginPwd;
     }
 
@@ -131,7 +136,7 @@ public class BankAccountModel {
                 customerAccountModel.setBankAccounts(bankAccounts);
                 
                 return "/pages/bankaccount/bankaccounts";
-            } catch (CustomerService.HofmeisterCustomerServiceException e) {
+            } catch (Exception e) {
                 return "/pages/bankaccount/bankaccount-add-failed";
             }
 

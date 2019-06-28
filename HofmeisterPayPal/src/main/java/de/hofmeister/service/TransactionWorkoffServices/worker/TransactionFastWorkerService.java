@@ -28,7 +28,7 @@ public class TransactionFastWorkerService implements ITransactionWorker, Seriali
     private CustomerService cs;
 
     @Inject
-    TransactionManagementService tms;
+    private TransactionManagementService tms;
 
     @Transactional(Transactional.TxType.REQUIRED)
     public void workOffTransaction(Transactions transaction){
@@ -48,7 +48,7 @@ public class TransactionFastWorkerService implements ITransactionWorker, Seriali
             transaction.setTransactionStatus(TransactionStatus.IN_PROGRESS);
             CustomerAccount sender = transaction.getSenderAcc(), receiver = transaction.getReceiverAcc();
             while (tms.isLocked(receiver) || tms.isLocked(sender)) {
-                // wait, netter: try to get one lock, instead of waiting for both to be free.
+                // wait, better: try to get one lock, instead of waiting for both to be free.
                 // also it should be possible to remove locks in real program => Coffman-Conditions
             }
 

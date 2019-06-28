@@ -18,9 +18,6 @@ public class TransactionModel {
     @Inject
     private PaymentService paymentService;
 
-    @Inject
-    private CustomerModel customerModel;
-
     private Customer contact;
     private String emailReceiver;
     private String amount;

@@ -18,10 +18,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @RequestScoped
 @WebService
@@ -101,8 +99,7 @@ public class PaymentService implements HofmeisterPaymentServiceIF {
     @WebMethod(exclude = true)
     public Collection<Transactions> getAllTransactions(){
         TypedQuery<Transactions> query = em.createNamedQuery("Transactions.all", Transactions.class);
-        List<Transactions> resultList = query.getResultList();
-        return resultList;
+        return query.getResultList();
     }
 
     @WebMethod(exclude = true)
@@ -116,8 +113,7 @@ public class PaymentService implements HofmeisterPaymentServiceIF {
         if(customerAccount != null){
             TypedQuery<Transactions> query = em.createQuery("SELECT s FROM Transactions AS s WHERE s.senderAcc=:custParam OR s.receiverAcc=:custParam", Transactions.class);
             query.setParameter("custParam", customerAccount);
-            List<Transactions> resultList = query.getResultList();
-            return resultList;
+            return query.getResultList();
         }
         else return null;
     }

@@ -42,16 +42,31 @@ public class InitService {
     Address businessAddressMarketPlace;
     Address businessAddressFinanceInstitute;
 
-    FinanceInstitute financeInstitute;
-    String bicFI = "BYLADEM1RBG";
-    String nameFI = "Sparkasse Regensburg";
+    FinanceInstitute financeInstituteBank;
+    String bicFIBank = "BANK";
+    String nameFIBank = "BANK";
+
+    FinanceInstitute financeInstituteIngolstadt;
+    String bicFIIngolstadt = "INGE1SZ6";
+    String nameFIIngolstadt = "Ingolstadt PB";
+
+    FinanceInstitute financeInstituteAmberg;
+    String bicFIAmberg = "AMGE1SZ6";
+    String nameFIAmberg = "Amberg PB";
+
+    FinanceInstitute financeInstituteRatisbona;
+    String bicFIRatisbona = "RPGE1SZ6";
+    String nameFIRatisbona = "Regensburg PB";
 
     BankAccount bankAccountSteamon;
     BankAccount bankAccountMarketPlace;
     BankAccount bankAccountPersonal;
     String ibanSteamon = "DE02100100100006820101";
     String ibanMarketPlace ="DE27100777770209299700";
-    String ibanPersonal="DE12500105170648489890";
+    String ibanPersonal="DE62480599303994628351";
+
+    String bankAccPwdPersonal="abc";
+    String bankAccLoginPersonal="JME261";
 
     Customer customerPersonal;
     Customer customerSteamon;
@@ -112,38 +127,52 @@ public class InitService {
     }
     private void initFinanceInstitute(){
         // search for init-address. needed after program-restart
-        TypedQuery<FinanceInstitute> query = em.createQuery("SELECT s FROM FinanceInstitute s WHERE s.address=:addressFI AND s.name=:nameFI AND s.bic=:bicFI", FinanceInstitute.class);
-        query.setParameter("addressFI", businessAddressFinanceInstitute);
-        query.setParameter("nameFI", nameFI);
-        query.setParameter("bicFI", bicFI);
+        TypedQuery<FinanceInstitute> query = em.createQuery("SELECT s FROM FinanceInstitute s WHERE s.name=:nameFI AND s.bic=:bicFI", FinanceInstitute.class);
+        query.setParameter("nameFI", nameFIBank);
+        query.setParameter("bicFI", bicFIBank);
         List<FinanceInstitute> resultList = query.getResultList();
+
         if(resultList.size() == 0) {
-            financeInstitute = new FinanceInstitute();
-            financeInstitute.setAddress(businessAddressFinanceInstitute);
-            financeInstitute.setName(nameFI);
-            financeInstitute.setBic(bicFI);
-            em.persist(financeInstitute);
+            initFIValues(financeInstituteBank, businessAddressFinanceInstitute, nameFIBank, bicFIBank);
+            initFIValues(financeInstituteIngolstadt, businessAddressFinanceInstitute, nameFIIngolstadt, bicFIIngolstadt);
+            initFIValues(financeInstituteAmberg, businessAddressFinanceInstitute, nameFIAmberg, bicFIAmberg);
+            initFIValues(financeInstituteRatisbona, businessAddressFinanceInstitute, nameFIRatisbona, bicFIRatisbona);
         }
         else{
-            financeInstitute = resultList.get(0);
+            financeInstituteBank = resultList.get(0);
+            TypedQuery<FinanceInstitute> query2 = em.createQuery("SELECT s FROM FinanceInstitute s WHERE s.bic=:bicFI", FinanceInstitute.class);
+            query2.setParameter("bicFI", bicFIRatisbona);
+            this.financeInstituteRatisbona = query2.getResultList().get(0);
         }
-    }
-    private void initBankAccount(){
-        bankAccountMarketPlace = initBankAccountValues(ibanMarketPlace);
-        bankAccountPersonal = initBankAccountValues(ibanPersonal);
-        bankAccountSteamon = initBankAccountValues(ibanSteamon);
         em.flush();
     }
-    private BankAccount initBankAccountValues(String iban){
+
+    private void initFIValues(FinanceInstitute fi, Address businessAddress, String name, String bic){
+        fi = new FinanceInstitute();
+        fi.setAddress(businessAddress);
+        fi.setName(name);
+        fi.setBic(bic);
+        em.persist(fi);
+    }
+
+    private void initBankAccount(){
+        bankAccountMarketPlace = initBankAccountValues(ibanMarketPlace, null, null, financeInstituteBank);
+        bankAccountPersonal = initBankAccountValues(ibanPersonal, bankAccLoginPersonal, bankAccPwdPersonal, financeInstituteRatisbona);
+        bankAccountSteamon = initBankAccountValues(ibanSteamon, null, null, financeInstituteBank);
+        em.flush();
+    }
+    private BankAccount initBankAccountValues(String iban, String loginId, String pwd, FinanceInstitute fi){
         // search for init-address. needed after program-restart
         TypedQuery<BankAccount> query = em.createQuery("SELECT s FROM BankAccount s WHERE s.financeInstitute=:fI AND s.iban=:ibanAcc", BankAccount.class);
-        query.setParameter("fI", financeInstitute);
+        query.setParameter("fI", fi);
         query.setParameter("ibanAcc", iban);
         List<BankAccount> resultList = query.getResultList();
         if(resultList.size() == 0){
             BankAccount bankAccount = new BankAccount();
-            bankAccount.setFinanceInstitute(financeInstitute);
+            bankAccount.setFinanceInstitute(fi);
             bankAccount.setIban(iban.trim());
+            bankAccount.setBankLoginId(loginId);
+            bankAccount.setBankLoginPwd(pwd);
             em.persist(bankAccount);
             return bankAccount;
         }
@@ -179,16 +208,16 @@ public class InitService {
         return resultList.get(0);
     }
     private void initCustomerAccount(){
-        customerAccountSteamon = initCustomerAccountValues(customerSteamon, "unHackablePwd", false, false, true, 2500000,
+        customerAccountSteamon = initCustomerAccountValues(customerSteamon, "unHackablePwd", false, true, 2500000,
                 new Date(), bankAccountSteamon, null);
-        customerAccountMarketplace = initCustomerAccountValues(customerMarketPlace, "securePsWd", false, false, true, 4500000,
+        customerAccountMarketplace = initCustomerAccountValues(customerMarketPlace, "securePsWd", false, true, 4500000,
                 new Date(), bankAccountMarketPlace, null);
-        customerAccountPersonal = initCustomerAccountValues(customerPersonal, "mysecretPwd", true, false, true, 500000,
+        customerAccountPersonal = initCustomerAccountValues(customerPersonal, "mysecretPwd", true, true, 500000,
                 new Date(), bankAccountPersonal, customerSteamon);
         em.flush();
     }
     // clean code would say normally not more than 5 parameters, in this case I let it like this because it's only an init-function
-    private CustomerAccount initCustomerAccountValues(Customer customer, String password, Boolean isDirectMoneyTransferAllowed, Boolean isLoggedIn, Boolean isActive,
+    private CustomerAccount initCustomerAccountValues(Customer customer, String password, Boolean isDirectMoneyTransferAllowed, Boolean isActive,
                                                       int creditInEuroCent, Date firstActivationDate, BankAccount bankAccount, Customer contact){
         // search for init-address. needed after program-restart
         TypedQuery<CustomerAccount> query = em.createQuery("SELECT s FROM CustomerAccount s " +

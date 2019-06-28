@@ -16,9 +16,6 @@ import javax.persistence.PersistenceContext;
 @SessionScoped
 public class CustomerModel {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Inject
     private InitService initService;
 

@@ -37,8 +37,8 @@ public class CustomerAccountModel {
 
     @PostConstruct
     public void init(){
-        this.bankAccounts = new ArrayList<BankAccount>();
-        this.contacts = new ArrayList<Customer>();
+        this.bankAccounts = new ArrayList<>();
+        this.contacts = new ArrayList<>();
     }
 
     public String getCreditInEuro() {
