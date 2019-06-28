@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 @Entity
 public class FinanceInstitute extends GeneratedIdEntity {
     @NotNull
-    @Pattern(regexp = "^[A-Z0-9]{8}$|^[A-Z0-9]{11}$")
     private String bic;
     @NotNull
     private String name;

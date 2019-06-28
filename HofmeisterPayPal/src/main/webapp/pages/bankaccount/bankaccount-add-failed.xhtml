@@ -56,7 +56,7 @@
             <br/>
             <h:outputText style="color: red" value="Bitte pr&uuml;fen Sie Ihre Login-Id der Bank (falls angegeben)"> </h:outputText> <br/>
             <h:outputLabel for="loginId">
-                LoginId der Bank (Pflicht bei Referenzkonto, Kosten 0.01 €):
+                LoginId der Bank (Pflicht bei Referenzkonto, Aufladen von 0.01 €):
             </h:outputLabel>
             <h:inputText id="loginId" value="#{bankAccountModel.loginId}">
             </h:inputText>
@@ -72,11 +72,22 @@
 
             <br/>
 
-            <h:commandButton id="addBankAccountButton" value="Bankkonto hinzuf&uuml;gen" action='#{bankAccountModel.addBankAccount(custModel, custAccModel)}'>
+            <h:commandButton id="addBankAccountButton" value="Bankkonto hinzuf&uuml;gen/&auml;ndern" action='#{bankAccountModel.addBankAccount(custModel, custAccModel)}'>
 
             </h:commandButton>
 
         </h:form>
+
+        <br/>
+
+        <h3>  Aktuelles Referenzkonto </h3>
+        <h:dataTable value="#{custAccModel.defaultBankAccount}" var="bankaccount">
+            <h:column>
+                <h:outputText value="#{bankaccount.iban}" converter="#{custAccModel.bankAccountConverter}" />
+            </h:column>
+        </h:dataTable>
+
+        <br/>
 
         <h3>  Verkn&uuml;pfte Bankkonten</h3>
 

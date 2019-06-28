@@ -30,10 +30,12 @@ public class CustomerConverter implements Converter {
             this.customerMap = new HashMap<>();
             this.customerObjectMap = new HashMap<>();
         }
+        if(customers!=null) {
             customers.forEach(customer -> {
                 customerMap.put(customer.getEmailAddress(), customer);
                 customerObjectMap.put("de.hofmeister.entity.customer.Customer@" + customer.getId(), customer);
             });
+        }
 
     }
 

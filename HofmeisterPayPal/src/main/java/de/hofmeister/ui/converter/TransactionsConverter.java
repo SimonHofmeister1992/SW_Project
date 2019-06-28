@@ -55,14 +55,14 @@ public class TransactionsConverter implements Converter {
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
         if(this.transactionsMap.containsKey(Long.valueOf(o.toString()))){
-            Transactions transaction = this.transactionsMap.get(o);
+            Transactions transaction = this.transactionsMap.get(Long.valueOf(o.toString()));
             Customer sender = customerMap.get(transaction.getSenderAcc().getId()), receiver = customerMap.get(transaction.getReceiverAcc().getId());
-            double amount = Double.valueOf(transaction.getAmountInEuroCent())/100;
+            double amount = transaction.getAmountInEuroCent()/100.0;
             String amountAsString = String.valueOf(amount);
             if(amountAsString.charAt(amountAsString.length()-2)=='.') amountAsString = amountAsString + "0";
             return "TransaktionsID: " + transaction.getId() + "  -  Datum: " + transaction.getTransactionDate() + "  -  Sender: " + sender.getFirstName() + " " + sender.getSecondName()
-                    + "  -  Empfänger: " + receiver.getFirstName() + " "  + receiver.getSecondName() + "  -  "
-                    + "Betrag: " + amountAsString + " €" + "  -  Status: " + transaction.getTransactionStatus();
+                    + "  -  Empfaenger: " + receiver.getFirstName() + " "  + receiver.getSecondName() + "  -  "
+                    + "Betrag: " + amountAsString + " Euro" + "  -  Status: " + transaction.getTransactionStatus();
         }
             throw new IllegalArgumentException("Object must be the Transaction-ID but is " + o.toString());
     }

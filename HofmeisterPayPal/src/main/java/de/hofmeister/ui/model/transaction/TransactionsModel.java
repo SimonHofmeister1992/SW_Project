@@ -40,10 +40,7 @@ public class TransactionsModel {
         if(customerSelf != null){
             t = paymentService.getTransactionsOfCustomer(customerSelf);
         }
-
-        t.forEach(transaction -> {
-            this.transactions.add(transaction);
-        });
+        if(t!=null) this.transactions.addAll(t);
     }
 
     public Collection<Transactions> getTransactions() {
